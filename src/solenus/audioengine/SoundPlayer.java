@@ -9,6 +9,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
 
 /**
  *
@@ -18,6 +19,7 @@ public class SoundPlayer
 {
     private static Clip mus1;
     private static Clip mus2;
+    private static double volTest =0.91;
     
     public static int loadMusic(File fileLoc)
     {
@@ -35,6 +37,7 @@ public class SoundPlayer
             // open audioInputStream to the clip
             mus1.open(audioInputStream1);
             mus2.open(audioInputStream2);
+            FloatControl gainControl = (FloatControl) mus1.getControl(FloatControl.Type.MASTER_GAIN);
 
            // mus2.start();
         }
@@ -50,7 +53,22 @@ public class SoundPlayer
     
     public static void playMus1()
     {
-        mus1.start();
+        FloatControl gainControl = (FloatControl) mus1.getControl(FloatControl.Type.MASTER_GAIN);
+        
+        
+        try     
+        {
+            System.out.println("VT: "+ volTest);
+            float dB = (float)(Math.log(volTest)/Math.log(10.0)*20.0);
+            System.out.println("DB: "+ dB);
+            gainControl.setValue(dB);
+        } 
+        catch (Exception ex) 
+        {
+            ex.printStackTrace();
+        }
+        
+
     }
     
     public static void pauseMus1()
