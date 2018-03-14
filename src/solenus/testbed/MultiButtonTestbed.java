@@ -77,7 +77,7 @@ public class MultiButtonTestbed implements ActionListener
     {
         //Put the button actions here.
         if(e.getSource() == but1)
-            SoundPlayer.loadMusic(new File("Beatdown.wav"));
+            SoundPlayer.loadMusic(new File("Audio/Beatdown.wav"));
         if(e.getSource() == but2)
             SoundPlayer.playMus1();
         if(e.getSource() == but3)
