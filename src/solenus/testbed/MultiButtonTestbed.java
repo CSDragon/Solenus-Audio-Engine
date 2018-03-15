@@ -66,6 +66,10 @@ public class MultiButtonTestbed implements ActionListener
         
         //turn on the window
         gameFrame.setVisible(true);
+        
+        //System Under Test
+        //set up the sound player
+        SoundPlayer.initialize();
     }
 
     @Override
