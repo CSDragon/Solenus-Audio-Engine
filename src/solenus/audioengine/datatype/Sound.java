@@ -5,7 +5,9 @@
  */
 package solenus.audioengine.datatype;
 
+import org.pscode.xui.sound.bigclip.BigClip;
 import java.io.File;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -13,14 +15,21 @@ import javax.sound.sampled.FloatControl;
 import solenus.audioengine.SoundPlayer;
 
 /**
- *
- * @author chrsc
+ * Generic Sound file for the Solenus Audio Engine.
+ * @author Chris Scott
  */
 public class Sound 
 {
+    /** Return constant for success. */
+    public static final int SUCCESS = 1;
+    /** Return constant for failure. */
+    public static final int FAIL = 0;
+    /** Return constant for the volume being too high. */
     public static final int VOLHIGH = -1;
+    /** Return constant for the volume being too low. */
     public static final int VOLLOW = -2;
     
+    //private BigClip soundClip;
     private Clip soundClip;
     private boolean loaded = false;
     private File sourceFile;
@@ -65,19 +74,29 @@ public class Sound
     /**
      * 
      * @param f The location of the file to load.
-     * @return 1 for Success, 0 for Fail
+     * @return SUCESS for Success, FAIL for Fail
      */
     public int load(File f)
     {
+        //if something happens, the audio might not be in a playable state anymore.
+        loaded = false;
+        
         try
         {
-            // create AudioInputStream object
+            //open file and decode
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
-            // create clip reference
-            soundClip = AudioSystem.getClip();
-            // open audioInputStream to the clip
-            soundClip.open(audioInputStream);
+            AudioFormat baseFormat = audioInputStream.getFormat();
+            AudioFormat decodeFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(),baseFormat.getChannels() * 2,baseFormat.getSampleRate(),false);
             
+            //get decoded audio stream
+            AudioInputStream decodedAudioInputStream = AudioSystem.getAudioInputStream(decodeFormat, audioInputStream);
+            
+            //get soundclip
+            //soundClip = new BigClip(AudioSystem.getClip());
+            soundClip = AudioSystem.getClip();
+
+            //open clip
+            soundClip.open(decodedAudioInputStream);
             //access the volume controler
             volumeControl = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
             
@@ -88,14 +107,15 @@ public class Sound
         catch(Exception e)
         {
             System.err.println(e);
+            return FAIL;
         }
-        return 1;
+        return SUCCESS;
     }
     
     /**
      * Sets the volume of the soundclip.
      * @param volume The volume you want to set the sound too. range of 0.0-1.0. Volume can go up to 2.0, but this distorts the sound rather than make it louder.
-     * @return 1 if success. -1 if the volume requested was too high. -2 if the volume requested was too low. 0 a different error occurred (see stack trace). 
+     * @return SUCCESS if success. VOLHIGH if the volume requested was too high. VOLLOW if the volume requested was too low. FAIL a different error occurred (see stack trace). 
      */
     public int setVolume(double volume)
     {
@@ -148,6 +168,14 @@ public class Sound
         curLoc = soundClip.getMicrosecondPosition();
         soundClip.stop();
         playing = false;
+    }
+    
+    /**
+     * 
+     */
+    public void close()
+    {
+        soundClip.close();
     }
     
 }

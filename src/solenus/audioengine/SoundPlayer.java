@@ -75,12 +75,6 @@ public class SoundPlayer
         {
             mus1 = new Sound(fileLoc);
             
-            // create AudioInputStream object
-            audioInputStream2 = AudioSystem.getAudioInputStream(fileLoc.getAbsoluteFile());
-            // create clip reference
-            mus2 = AudioSystem.getClip();
-            // open audioInputStream to the clip
-            mus2.open(audioInputStream2);
 
            // mus2.start();
         }

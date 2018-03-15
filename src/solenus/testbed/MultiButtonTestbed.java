@@ -55,7 +55,7 @@ public class MultiButtonTestbed implements ActionListener
         but3.addActionListener(this);
         gameFrame.add(but3, BorderLayout.WEST);
 
-        but4 = new JButton();
+        but4 = new JButton("beatdown");
         but4.addActionListener(this);
         gameFrame.add(but4, BorderLayout.SOUTH);
 
@@ -81,11 +81,14 @@ public class MultiButtonTestbed implements ActionListener
     {
         //Put the button actions here.
         if(e.getSource() == but1)
-            SoundPlayer.loadMusic(new File("Audio/Beatdown.wav"));
+            SoundPlayer.loadMusic(new File("Audio/skaia.mp3"));
         if(e.getSource() == but2)
             SoundPlayer.playMus1();
         if(e.getSource() == but3)
             SoundPlayer.pauseMus1();
+        if(e.getSource() == but4)
+            SoundPlayer.loadMusic(new File("Audio/beatdown.wav"));
+
     }
     
     
