@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
+import solenus.audioengine.datatype.BookmarkSound;
 import solenus.audioengine.datatype.Sound;
 
 /**
@@ -39,7 +40,7 @@ public class SoundPlayer
     
     
     
-    private static Sound mus1;
+    private static BookmarkSound mus1;
     private static Clip mus2;
     private static double volTest =0.91;
     
@@ -69,11 +70,10 @@ public class SoundPlayer
     
     public static int loadMusic(File fileLoc)
     {
-        AudioInputStream audioInputStream2;
         
         try
         {
-            mus1 = new Sound(fileLoc);
+            mus1 = new BookmarkSound(fileLoc);
             
 
            // mus2.start();
@@ -112,6 +112,11 @@ public class SoundPlayer
     public static void pauseMus1()
     {
         mus1.pause();
+    }
+    
+    public static void goBook(String name)
+    {
+        mus1.jumpToMark(name);
     }
     
 

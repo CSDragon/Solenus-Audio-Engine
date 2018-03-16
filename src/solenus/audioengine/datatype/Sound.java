@@ -30,11 +30,11 @@ public class Sound
     public static final int VOLLOW = -2;
     
     //private BigClip soundClip;
-    private Clip soundClip;
-    private boolean loaded = false;
-    private File sourceFile;
-    private FloatControl volumeControl;
-    private boolean playing = false;
+    protected Clip soundClip;
+    protected boolean loaded = false;
+    protected File sourceFile;
+    protected FloatControl volumeControl;
+    protected boolean playing = false;
     
     private int soundType;
     
@@ -49,7 +49,9 @@ public class Sound
     public Sound(File _sourceFile)
     {
         sourceFile = _sourceFile;
-        load(sourceFile);
+        
+        //call load so that subclasses can override
+        load(sourceFile); 
         soundType = SoundPlayer.GLOBALGENERIC;
     }
     
@@ -72,7 +74,7 @@ public class Sound
     }
     
     /**
-     * 
+     * Loads a target audio file.
      * @param f The location of the file to load.
      * @return SUCESS for Success, FAIL for Fail
      */
