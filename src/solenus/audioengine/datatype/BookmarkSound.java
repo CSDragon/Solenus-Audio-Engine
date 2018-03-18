@@ -46,6 +46,7 @@ public class BookmarkSound extends Sound
                 bookmarks = new Bookmark[Integer.parseInt(in.readLine().substring(21))];
                 for(int i = 0; i< bookmarks.length; i++)
                     bookmarks[i] = new Bookmark(Long.parseLong(in.readLine()), in.readLine());
+                in.close();
             }
             catch(Exception e)
             {
