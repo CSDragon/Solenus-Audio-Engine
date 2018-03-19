@@ -26,7 +26,7 @@ public class MultiButtonTestbed implements ActionListener
     private static JButton but3;
     private static JButton but4;
     private static JButton but5;
-    
+        
     //Generic main
     public static void main(String[] args) 
     {

@@ -8,6 +8,7 @@ package solenus.audioengine.datatype;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import solenus.audioengine.SoundPlayer;
 
 /**
@@ -19,11 +20,25 @@ import solenus.audioengine.SoundPlayer;
  */
 public class BookmarkSound extends Sound
 {
-    private Bookmark[] bookmarks;
+    protected Bookmark[] bookmarks;
     
-    public BookmarkSound(File source)
+    /**
+     * Creates a BookmarkSound object set to a specific volume slider, and loads the file.
+     * @param _sourceFile The file to be loaded.
+     * @param _soundType The sound type this Sound is.
+     */
+    public BookmarkSound(File _sourceFile, int _soundType)
     {
-        super(source);
+        super(_sourceFile, _soundType);
+    }
+    
+    /**
+     * Basic LoopableSound constructor with no sound type
+     * @param _sourceFile The file to be loaded.
+     */
+    public BookmarkSound(File _sourceFile)
+    {
+        this(_sourceFile, SoundPlayer.GLOBALGENERIC);
        
     }
     
@@ -31,28 +46,33 @@ public class BookmarkSound extends Sound
      * Loads the audio and creates the bookmarks
      * @param f The file to be loaded, either the audio file itself, or a text file containing metadata.
      * @return SUCESS for Success, FAIL for Fail
-
      */
     @Override
     public int load(File f)
     {
+        //Is this a metadata file, or a audio file?
         if(f.getName().substring(f.getName().length()-4).equals(".txt"))
         {
+            //We've got a metadata file. Read in the information.
             try
             {
+                //create the file reader
                 BufferedReader in = new BufferedReader(new FileReader(f));
-                sourceFile = new File(in.readLine().substring(15));
-                super.load(sourceFile);
-                bookmarks = new Bookmark[Integer.parseInt(in.readLine().substring(21))];
-                for(int i = 0; i< bookmarks.length; i++)
-                    bookmarks[i] = new Bookmark(Long.parseLong(in.readLine()), in.readLine());
+                
+                //read the file
+                readTextFile(in);
+                
+                //close the file
                 in.close();
+                
+                //Actually load the audio file. Note: sourceFile was changed in readTextFile(in)
+                super.load(sourceFile);
             }
             catch(Exception e)
             {
                 System.err.println(e);
             }
-            return 1;
+            return SUCCESS;
         }
         else
         {
@@ -63,45 +83,95 @@ public class BookmarkSound extends Sound
             
             //Load the default bookmarks.
             bookmarks = new Bookmark[2];
-            bookmarks[0] = new Bookmark(0,"Start");
-            bookmarks[1] = new Bookmark(soundClip.getMicrosecondLength(), "End");
+            bookmarks[0] = new Bookmark("Start", 0);
+            bookmarks[1] = new Bookmark("End", soundClip.getMicrosecondLength());
             
         }
-        
+
         return SUCCESS;
 
     }
     
-    
+    /**
+     * Reads audio source and bookmark data from a text file.
+     * @param in The file buffer we're reading from
+     * @throws IOException 
+     */
+    public void readTextFile(BufferedReader in) throws IOException
+    {
+        //Get the actual audio source file.
+        sourceFile = new File(in.readLine().substring(15));
+        
+        //get the number of bookmarks.
+        bookmarks = new Bookmark[Integer.parseInt(in.readLine().substring(21))];
+        
+        //create each bookmark.
+        for(int i = 0; i< bookmarks.length; i++)
+            bookmarks[i] = new Bookmark(in.readLine(), Long.parseLong(in.readLine()));
+    }
     
     
 
     /**
-     * Gets the timecode from the requested bookmark. 
+     * Gets the requested bookmark. 
      * @param name The name of the bookmark we're searching for.
-     * @return The timecode that the bookmark points to.
+     * @return The bookmark that name points to.
      */
-    public long getBookmarkTimecode(String name)
+    public Bookmark getBookmark(String name)
     {
         //Check each bookmark too see if it's the one we're looking for.
-        //In theory we could make this faster if the array was sorted by name, but currently it is sorted by timecode.
+        //In theory we could make this faster if the array was sorted by name, but currently it sorted by user preference. There should never bee too many bookmarks to make this show though.
         for (Bookmark b : bookmarks) 
         {
             if (b != null && b.getName().equals(name)) 
-                return b.getTimeCode();
+                return b;
         }
         
-        //Failcase, return the start of the sound.
-        return 0l;
+        //Failcase, return null.
+        return null;
     }
     
-    public void jumpToMark(String name)
+    /**
+     * Finds the index in the bookmarks array of a bookmark, by name.
+     * @param name The name of the bookmark we're trying to find.
+     * @return index of the bookmark with that name, or -1 if not found in the array.
+     */
+    public int indexOfBookmark(String name)
     {
-        System.out.println(soundClip.getMicrosecondPosition());
-        System.out.println(soundClip.getMicrosecondLength());
-        System.out.println(getBookmarkTimecode(name));
-
-        soundClip.setMicrosecondPosition(getBookmarkTimecode(name));
+        //In theory we could make this faster if the array was sorted by name, but currently it sorted by user preference. There should never bee too many bookmarks to make this show though.
+        for(int i = 0; i< bookmarks.length; i++)
+            if(bookmarks[i].getName().equals(name))
+                return i;
+        
+        return -1;
+    }
+    
+    /**
+     * Finds the index in the bookmarks array of a bookmark. Compares based on name only.
+     * @param b The bookmark we're trying to find.
+     * @return index of the bookmark with that name, or -1 if not found in the array.
+     */
+    public int indexOfBookmark(Bookmark b)
+    {
+        //The name is the identifying part of a bookmark, so we don't care if the passed bookmark is actually different.
+        return indexOfBookmark(b.getName());
+    }
+    
+    /**
+     * Seeks to a bookmark in the Sound.
+     * @param name The name of the bookmark we're looking for.
+     */
+    public void seek(String name)
+    {
+        //find the bookmark
+        Bookmark b = getBookmark(name);
+        //make sure it's not null
+        if(b!= null)
+            soundClip.setMicrosecondPosition(b.getTimeCode());
+        
+        //bookmark was not found. Seek to the start.
+        else
+            soundClip.setMicrosecondPosition(0l);
     }
     
     /**

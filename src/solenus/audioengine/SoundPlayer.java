@@ -11,6 +11,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
 import solenus.audioengine.datatype.BookmarkSound;
+import solenus.audioengine.datatype.LoopableSound;
 import solenus.audioengine.datatype.Sound;
 
 /**
@@ -40,7 +41,7 @@ public class SoundPlayer
     
     
     
-    private static BookmarkSound mus1;
+    private static LoopableSound mus1;
     private static Clip mus2;
     private static double volTest =0.91;
     
@@ -73,7 +74,7 @@ public class SoundPlayer
         
         try
         {
-            mus1 = new BookmarkSound(fileLoc);
+            mus1 = new LoopableSound(fileLoc);
             
 
            // mus2.start();
@@ -116,7 +117,7 @@ public class SoundPlayer
     
     public static void goBook(String name)
     {
-        mus1.jumpToMark(name);
+        mus1.checkLoop(false);
     }
     
 

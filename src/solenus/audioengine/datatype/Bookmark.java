@@ -17,10 +17,10 @@ public class Bookmark
     
     /**
      * 
-     * @param _timeCode Time to set this bookmark at, in microseconds.
      * @param _name The bookmark's name, which is used for finding it. 
+     * @param _timeCode Time to set this bookmark at, in microseconds.
      */
-    public Bookmark (long _timeCode, String _name)
+    public Bookmark (String _name, long _timeCode)
     {
         timeCode = _timeCode;
         name = _name;

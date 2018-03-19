@@ -5,7 +5,7 @@
  */
 package solenus.audioengine.datatype;
 
-import org.pscode.xui.sound.bigclip.BigClip;
+//import org.pscode.xui.sound.bigclip.BigClip;
 import java.io.File;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -42,29 +42,30 @@ public class Sound
     long curLoc;
     
     
-    /**
-     * Creates a Sound object and loads the file
-     * @param _sourceFile The file to be loaded.
-     */
-    public Sound(File _sourceFile)
-    {
-        sourceFile = _sourceFile;
-        
-        //call load so that subclasses can override
-        load(sourceFile); 
-        soundType = SoundPlayer.GLOBALGENERIC;
-    }
-    
-    /**
+     /**
      * Creates a Sound object set to a specific volume slider, and loads the file.
      * @param _sourceFile The file to be loaded.
      * @param _soundType 
      */
     public Sound(File _sourceFile, int _soundType)
     {
-        this(_sourceFile);
+        sourceFile = _sourceFile;
+        
+        //call load so that subclasses can override
+        load(sourceFile); 
         soundType = _soundType;
     }
+    
+    
+    /**
+     * Creates a Sound object and loads the file
+     * @param _sourceFile The file to be loaded.
+     */
+    public Sound(File _sourceFile)
+    {
+        this(_sourceFile, SoundPlayer.GLOBALGENERIC);
+    }
+    
     
     /**
      * Backup Sound constructor. Creates an empty Sound object.
@@ -88,15 +89,15 @@ public class Sound
             //open file and decode
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
             AudioFormat baseFormat = audioInputStream.getFormat();
-            AudioFormat decodeFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(),baseFormat.getChannels() * 2,baseFormat.getSampleRate(),false);
+            AudioFormat decodeFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(),baseFormat.getChannels()*2, baseFormat.getSampleRate(), false);
             
             //get decoded audio stream
             AudioInputStream decodedAudioInputStream = AudioSystem.getAudioInputStream(decodeFormat, audioInputStream);
-            
             //get soundclip
             //soundClip = new BigClip(AudioSystem.getClip());
             soundClip = AudioSystem.getClip();
 
+            
             //open clip
             soundClip.open(decodedAudioInputStream);
             //access the volume controler
