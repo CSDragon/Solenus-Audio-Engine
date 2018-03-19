@@ -5,7 +5,6 @@
  */
 package solenus.audioengine.datatype;
 
-//import org.pscode.xui.sound.bigclip.BigClip;
 import java.io.File;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
