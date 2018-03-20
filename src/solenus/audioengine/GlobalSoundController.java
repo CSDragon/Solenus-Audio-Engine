@@ -10,15 +10,15 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
-import solenus.audioengine.datatype.BookmarkSound;
-import solenus.audioengine.datatype.LoopableSound;
-import solenus.audioengine.datatype.Sound;
+import solenus.audioengine.sound.BookmarkSound;
+import solenus.audioengine.sound.LoopSound;
+import solenus.audioengine.sound.Sound;
 
 /**
  *
  * @author Chris Scott
  */
-public class SoundPlayer 
+public class GlobalSoundController 
 {
     
     
@@ -41,7 +41,7 @@ public class SoundPlayer
     
     
     
-    private static LoopableSound mus1;
+    private static LoopSound mus1;
     private static Clip mus2;
     private static double volTest =0.91;
     
@@ -68,13 +68,20 @@ public class SoundPlayer
         return globalOverallVolume;
     }
     
+    public static void setGlobalVolume(int volType, double volume)
+    {
+        if(volType < globalVolumeTypes && volType >= 0)
+            globalVolumes[volType] = volume;
+        
+    }
+    
     
     public static int loadMusic(File fileLoc)
     {
         
         try
         {
-            mus1 = new LoopableSound(fileLoc);
+            mus1 = new LoopSound(fileLoc);
             
 
            // mus2.start();

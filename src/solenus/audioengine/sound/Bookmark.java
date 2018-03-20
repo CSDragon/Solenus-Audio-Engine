@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package solenus.audioengine.datatype;
+package solenus.audioengine.sound;
 
 /**
  * Datatype for audio objects creating a pair between a timecode (in microseconds) and a name.

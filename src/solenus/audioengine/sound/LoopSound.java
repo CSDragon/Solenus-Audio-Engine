@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package solenus.audioengine.datatype;
+package solenus.audioengine.sound;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import solenus.audioengine.SoundPlayer;
+import solenus.audioengine.GlobalSoundController;
 
 /**
  * A Loopable Sound behaves much like a Bookmarked Sound, but contains looping data.
@@ -19,7 +19,7 @@ import solenus.audioengine.SoundPlayer;
  * You can set a maximum number of loops.
  * @author Chris Scott
  */
-public class LoopableSound extends BookmarkSound
+public class LoopSound extends BookmarkSound
 {
     private int loopStart;
     private int loopEnd;
@@ -30,7 +30,7 @@ public class LoopableSound extends BookmarkSound
      * @param _sourceFile The file to be loaded.
      * @param _soundType The sound type this Sound is.
      */
-    public LoopableSound(File _sourceFile, int _soundType)
+    public LoopSound(File _sourceFile, int _soundType)
     {
         //Actual differences in construction between this and Sound are done when Sound calls load().
         super(_sourceFile, _soundType);
@@ -48,9 +48,9 @@ public class LoopableSound extends BookmarkSound
      * Basic LoopableSound constructor with no sound type
      * @param _sourceFile The file to be loaded.
      */
-    public LoopableSound(File _sourceFile)
+    public LoopSound(File _sourceFile)
     {
-        this(_sourceFile, SoundPlayer.GLOBALGENERIC);
+        this(_sourceFile, GlobalSoundController.GLOBALGENERIC);
     }
     
     /**

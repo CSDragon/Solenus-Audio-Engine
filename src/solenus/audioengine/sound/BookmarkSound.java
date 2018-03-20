@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package solenus.audioengine.datatype;
+package solenus.audioengine.sound;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import solenus.audioengine.SoundPlayer;
+import solenus.audioengine.GlobalSoundController;
 
 /**
  * A Bookmarked Sound behaves much like a Sound, but contains the ability to jump to pre-defined timestamps. 
@@ -38,7 +38,7 @@ public class BookmarkSound extends Sound
      */
     public BookmarkSound(File _sourceFile)
     {
-        this(_sourceFile, SoundPlayer.GLOBALGENERIC);
+        this(_sourceFile, GlobalSoundController.GLOBALGENERIC);
        
     }
     

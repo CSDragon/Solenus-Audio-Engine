@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package solenus.audioengine.datatype;
+package solenus.audioengine.sound;
 
 import java.io.File;
 import javax.sound.sampled.AudioFormat;
@@ -11,7 +11,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import solenus.audioengine.SoundPlayer;
+import solenus.audioengine.GlobalSoundController;
 
 /**
  * Generic Sound file for the Solenus Audio Engine.
@@ -34,6 +34,7 @@ public class Sound
     protected File sourceFile;
     protected FloatControl volumeControl;
     protected boolean playing = false;
+    protected String name;
     
     private int soundType;
     
@@ -62,7 +63,7 @@ public class Sound
      */
     public Sound(File _sourceFile)
     {
-        this(_sourceFile, SoundPlayer.GLOBALGENERIC);
+        this(_sourceFile, GlobalSoundController.GLOBALGENERIC);
     }
     
     
@@ -105,6 +106,7 @@ public class Sound
             //set that we've loaded.
             loaded = true;
             duration = soundClip.getMicrosecondLength();
+            name = f.getName().substring(0, f.getName().length()-4);
         }
         catch(Exception e)
         {
@@ -124,7 +126,7 @@ public class Sound
         try     
         {
             //Take into account all volume sliders.
-            double trueVolume = volume * SoundPlayer.getGlobalVolume(soundType) * SoundPlayer.getGlobalOverallVolume();
+            double trueVolume = volume * GlobalSoundController.getGlobalVolume(soundType) * GlobalSoundController.getGlobalOverallVolume();
 
             //convert %based volume to DB based volume. Then set it
             float dB = (float)(Math.log(trueVolume)/Math.log(10.0)*20.0);

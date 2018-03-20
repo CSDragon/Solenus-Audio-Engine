@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import solenus.audioengine.SoundPlayer;
+import solenus.audioengine.GlobalSoundController;
 
 /**
  * MultiButtonTestbed
@@ -69,7 +69,7 @@ public class MultiButtonTestbed implements ActionListener
         
         //System Under Test
         //set up the sound player
-        SoundPlayer.initialize();
+        GlobalSoundController.initialize();
     }
 
     @Override
@@ -81,15 +81,15 @@ public class MultiButtonTestbed implements ActionListener
     {
         //Put the button actions here.
         if(e.getSource() == but1)
-            SoundPlayer.loadMusic(new File("Audio/skaia.txt"));
+            GlobalSoundController.loadMusic(new File("Audio/skaia.txt"));
         if(e.getSource() == but2)
-            SoundPlayer.playMus1();
+            GlobalSoundController.playMus1();
         if(e.getSource() == but3)
-            SoundPlayer.pauseMus1();
+            GlobalSoundController.pauseMus1();
         if(e.getSource() == but4)
-            SoundPlayer.loadMusic(new File("Audio/beatdown.wav"));
+            GlobalSoundController.loadMusic(new File("Audio/beatdown.wav"));
         if(e.getSource() == but5)
-            SoundPlayer.goBook("In Vento");
+            GlobalSoundController.goBook("In Vento");
 
     }
     
