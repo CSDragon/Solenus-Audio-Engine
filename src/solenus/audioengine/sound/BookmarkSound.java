@@ -139,6 +139,7 @@ public class BookmarkSound extends Sound
     public int indexOfBookmark(String name)
     {
         //In theory we could make this faster if the array was sorted by name, but currently it sorted by user preference. There should never bee too many bookmarks to make this show though.
+        //TODO Hashmap implementation
         for(int i = 0; i< bookmarks.length; i++)
             if(bookmarks[i].getName().equals(name))
                 return i;

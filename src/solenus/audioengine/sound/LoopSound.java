@@ -24,6 +24,8 @@ public class LoopSound extends BookmarkSound
     private int loopStart;
     private int loopEnd;
     private boolean loadedFromDataFile;
+    private boolean looping;
+    private int numLoops;
     
     /**
      * Creates a LoopableSound object set to a specific volume slider, and loads the file.
@@ -118,7 +120,7 @@ public class LoopSound extends BookmarkSound
     {
         //check how long it's been since we were supposed to loop.
         long timeDiff = soundClip.getMicrosecondPosition() - bookmarks[getLoopEnd()].getTimeCode();
-        
+        System.out.println(timeDiff);
         //if we're past the loop time, loop
         if(timeDiff >= 0)
         {
@@ -129,6 +131,9 @@ public class LoopSound extends BookmarkSound
                 //soft loop adjusts for time 
                 soundClip.setMicrosecondPosition(bookmarks[getLoopStart()].getTimeCode() + timeDiff);
         }
+        //If the clip reaches its end, it will be stopped, but the sound still expects it to be playing. So restart it. 
+       if(playing)
+            soundClip.start();
     }
     
     //<editor-fold desc="getters and setters">
@@ -163,6 +168,22 @@ public class LoopSound extends BookmarkSound
     public void setLoopEnd(int loopEnd) 
     {
         this.loopEnd = loopEnd;
+    }
+    
+    /**
+     * @return the looping
+     */
+    public boolean getLooping() 
+    {
+        return looping;
+    }
+
+    /**
+     * @return the numLoops
+     */
+    public int getNumLoops() 
+    {
+        return numLoops;
     }
     
     //</editor-fold>

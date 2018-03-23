@@ -8,7 +8,7 @@ package solenus.audioengine;
 /**
  * A Sound Effect Controller is an object that any object that uses sound effects should contain.
  * It manages the object's sounds and interfaces with the global sound controller.
- * @author Chris
+ * @author Chris Scott
  */
 public class SoundEffectController 
 {
