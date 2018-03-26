@@ -168,11 +168,11 @@ public class BookmarkSound extends Sound
         Bookmark b = getBookmark(name);
         //make sure it's not null
         if(b!= null)
-            soundClip.setMicrosecondPosition(b.getTimeCode());
+            seek(b.getTimeCode());
         
         //bookmark was not found. Seek to the start.
         else
-            soundClip.setMicrosecondPosition(0l);
+            seek(0);
     }
     
     /**

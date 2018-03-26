@@ -6,6 +6,8 @@
 package solenus.audioengine;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
@@ -39,8 +41,13 @@ public class GlobalSoundController
     //globalOverallVolume is an overall volume slider.
     private static double globalOverallVolume;
     
+    //sound effect controller control
+    private static HashMap<Long, SoundEffectController> soundEffects;
+    private static long numSFX;
+    private static long lastSFXIndex;
     
     
+    //TESTING Variables
     private static LoopSound mus1;
     private static Clip mus2;
     private static double volTest =0.91;
@@ -55,8 +62,49 @@ public class GlobalSoundController
             globalVolumes[i] = 1.0;
         
         globalOverallVolume = 1.0;
+        
+        //Initialise SFX Controller map. 
+        soundEffects = new HashMap<>();
+        numSFX = 0;
+        lastSFXIndex = -1; //-1 because registration increments.
     }
     
+    
+    /**
+     * Registers a Sound Effect Controller to the Global Sound Controller
+     * @param sfxc the Sound Effect Controller to be registered.
+     * @return The index value the Sound Effect Controller will be registered to.
+     */
+    public static long registerSoundEffectController(SoundEffectController sfxc)
+    {
+        //increment numSFX, and sfxIndex.
+        numSFX++;
+        lastSFXIndex++;
+        //Add the Sound Effect Controller to the map.
+        soundEffects.put(lastSFXIndex, sfxc);
+        return lastSFXIndex;
+    }
+    
+    /**
+     * Kills a Sound Effect Controller, ending all sounds it is playing, closing all inputstreams, and removing it from the Global Sound Controller's map.
+     * @param index The Sound Effect Controller to remove.
+     */
+    public static void killSoundEffectController(long index)
+    {
+        SoundEffectController sfxc = soundEffects.get(index);
+        //If there actually was a value there.
+        if(sfxc != null)
+        {
+            //end all sounds, remove from sounds, deitterate numSFX
+            sfxc.end();
+            soundEffects.remove(index, sfxc);
+            numSFX--;
+        }
+    }
+    
+    
+    
+    //<editor-fold desc="getters and setters">
     
     public static double getGlobalVolume(int volType)
     {
@@ -75,6 +123,12 @@ public class GlobalSoundController
         
     }
     
+    //</editor-fold>
+
+    
+    /////////////////////
+    //TESTING FUNCTIONS//
+    /////////////////////
     
     public static int loadMusic(File fileLoc)
     {

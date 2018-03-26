@@ -81,13 +81,13 @@ public class MultiButtonTestbed implements ActionListener
     {
         //Put the button actions here.
         if(e.getSource() == but1)
-            GlobalSoundController.loadMusic(new File("Audio/skaia.txt"));
+            GlobalSoundController.loadMusic(new File("audio/skaia.txt"));
         if(e.getSource() == but2)
             GlobalSoundController.playMus1();
         if(e.getSource() == but3)
             GlobalSoundController.pauseMus1();
         if(e.getSource() == but4)
-            GlobalSoundController.loadMusic(new File("Audio/beatdown.wav"));
+            GlobalSoundController.loadMusic(new File("audio/beatdown.wav"));
         if(e.getSource() == but5)
             GlobalSoundController.goBook("In Vento");
 

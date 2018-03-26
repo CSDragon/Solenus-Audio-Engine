@@ -38,10 +38,6 @@ public class Sound
     
     private int soundType;
     
-    long duration; 
-    long curLoc;
-    
-    
      /**
      * Creates a Sound object set to a specific volume slider, and loads the file.
      * @param _sourceFile The file to be loaded.
@@ -105,7 +101,7 @@ public class Sound
             
             //set that we've loaded.
             loaded = true;
-            duration = soundClip.getMicrosecondLength();
+            //TODO: This works for all 3-length extensions like .mp3 and .wav, but should be more foolproof 
             name = f.getName().substring(0, f.getName().length()-4);
         }
         catch(Exception e)
@@ -146,7 +142,7 @@ public class Sound
     }
     
     /**
-     * Plays the sound. Starts playback where the sound last left off.
+     * Plays the sound. Starts playback where the sound last left off, where we've seeked to, or the beginning if full stopped.
      */
     public void play()
     {
@@ -155,12 +151,23 @@ public class Sound
             System.err.println("Error: Attempted to play unloaded sound. ("+sourceFile.getAbsolutePath()+")");
             return;
         }
+        
         soundClip.start();
         playing = true;
     }
     
     /**
-     * Stops playback.
+     * Plays the sound from the start.
+     */
+    public void playFromStart()
+    {
+        //start from the beginning and play.
+        seek(0);
+        play();
+    }
+    
+    /**
+     * Pauses playback, retaining current location.
      */
     public void pause()
     {
@@ -169,17 +176,79 @@ public class Sound
             System.err.println("Error: Attempted to pause unloaded sound. ("+sourceFile.getAbsolutePath()+")");
             return;
         }
-        curLoc = soundClip.getMicrosecondPosition();
         soundClip.stop();
         playing = false;
     }
     
     /**
-     * 
+     * Stops playback (And resets the current location to the start)
+     */
+    public void stop()
+    {
+        if(!loaded)
+        {
+            System.err.println("Error: Attempted to stop unloaded sound. ("+sourceFile.getAbsolutePath()+")");
+            return;
+        }
+        
+        soundClip.stop();
+        seek(0);
+        playing = false;
+    }
+    
+    /**
+     * Closes the sound clip.
      */
     public void close()
     {
         soundClip.close();
+        playing = false;
+        loaded = false;
+    }
+    
+    /**
+     * Seeks the clip.
+     * @param position The position in the clip, in microseconds, to seek the clip to.
+     */
+    public void seek(long position)
+    {
+        soundClip.setMicrosecondPosition(position);
+    }
+    
+    /**
+     * Gets the length of the clip.
+     * @return Clip length in microseconds.
+     */
+    public long getLength()
+    {
+        return soundClip.getMicrosecondLength();
+    }
+    
+    /**
+     * Gets the location of the clip
+     * @return Clip position in microseconds.
+     */
+    public long getCurrentLocation()
+    {
+        return soundClip.getMicrosecondPosition();
+    }
+    
+    /**
+     * Getter for 'name'
+     * @return This object's 'name'.
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    /**
+     * Setter for 'name'.
+     * @param n The new name.
+     */
+    public void setName(String n)
+    {
+        name = n;
     }
     
 }
