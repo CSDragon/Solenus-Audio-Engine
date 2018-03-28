@@ -19,16 +19,19 @@ import solenus.audioengine.sound.Sound;
 public class SoundEffectController 
 {
     
+    /**Shortcut value for Sound objects*/
     public static final int SOUND = 0;
+    /**Shortcut value for Bookmark Sound objects*/
     public static final int BOOKMARKSOUND = 1;
+    /**Shortcut value for Looping Sound objects*/
     public static final int LOOPSOUND = 2;
 
-    private HashMap<String, Sound> sounds;
     private long sfxRegister;
+    private HashMap<String, Sound> preloadSounds;
     
     public SoundEffectController()
     {
-        sounds = new HashMap<>();
+        preloadSounds = new HashMap<>();
         sfxRegister = GlobalSoundController.registerSoundEffectController(this);
     }
     
@@ -61,7 +64,12 @@ public class SoundEffectController
         if(name != null)
             s.setName(name);
         //Add the sound to the controller.
-        sounds.put(s.getName(), s);
+        preloadSounds.put(s.getName(), s);
+    }
+    
+    public void addSound(Sound s)
+    {
+        preloadSounds.put(s.getName(), s);
     }
     
     
@@ -72,14 +80,14 @@ public class SoundEffectController
     public void end()
     {
         //for each Sound
-        for(Sound s : sounds.values())
+        for(Sound s : preloadSounds.values())
         {
             //stop playback and close the stream
             s.stop();
             s.close();
         }
         //clear the map
-        sounds.clear();
+        preloadSounds.clear();
     }
     
     /**
@@ -89,7 +97,7 @@ public class SoundEffectController
      */
     public Sound getSound(String name)
     {
-        return sounds.get(name);
+        return preloadSounds.get(name);
     }
     
 }

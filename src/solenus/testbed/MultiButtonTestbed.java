@@ -8,6 +8,7 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import solenus.audioengine.GlobalSoundController;
+import solenus.audioengine.SoundEffectController;
 
 /**
  * MultiButtonTestbed
@@ -26,6 +27,9 @@ public class MultiButtonTestbed implements ActionListener
     private static JButton but3;
     private static JButton but4;
     private static JButton but5;
+    
+    private SoundEffectController sfxc;
+    private SoundEffectController sfxc2;
         
     //Generic main
     public static void main(String[] args) 
@@ -70,6 +74,8 @@ public class MultiButtonTestbed implements ActionListener
         //System Under Test
         //set up the sound player
         GlobalSoundController.initialize();
+        sfxc = new SoundEffectController();
+        sfxc2 = new SoundEffectController();
     }
 
     @Override
@@ -81,9 +87,13 @@ public class MultiButtonTestbed implements ActionListener
     {
         //Put the button actions here.
         if(e.getSource() == but1)
-            GlobalSoundController.loadMusic(new File("audio/skaia.txt"));
+        {
+            sfxc.addSound(new File("audio/beatdown.wav"), 0, 0, "batdown");
+        }
         if(e.getSource() == but2)
-            GlobalSoundController.playMus1();
+        {
+            sfxc.getSound("batdown").play();
+        }
         if(e.getSource() == but3)
             GlobalSoundController.pauseMus1();
         if(e.getSource() == but4)
