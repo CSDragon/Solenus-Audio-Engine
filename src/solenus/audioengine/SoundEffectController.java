@@ -29,6 +29,10 @@ public class SoundEffectController
     private long sfxRegister;
     private HashMap<String, Sound> preloadSounds;
     
+    /**
+     * Default constructor.
+     * Sets up the basics.
+     */
     public SoundEffectController()
     {
         preloadSounds = new HashMap<>();
@@ -67,11 +71,15 @@ public class SoundEffectController
         preloadSounds.put(s.getName(), s);
     }
     
+    
+    /**
+     * Adds a sound to the preloaded sounds
+     * @param s The sound to be added.
+     */
     public void addSound(Sound s)
     {
         preloadSounds.put(s.getName(), s);
     }
-    
     
     
     /**
@@ -89,6 +97,7 @@ public class SoundEffectController
         //clear the map
         preloadSounds.clear();
     }
+    
     
     /**
      * Gets a sound by name.
