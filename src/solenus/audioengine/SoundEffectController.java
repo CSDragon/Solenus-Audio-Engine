@@ -26,7 +26,7 @@ public class SoundEffectController
     /**Shortcut value for Looping Sound objects*/
     public static final int LOOPSOUND = 2;
 
-    private long sfxRegister;
+    private long sfxRegNum;
     private HashMap<String, Sound> preloadSounds;
     
     /**
@@ -36,7 +36,7 @@ public class SoundEffectController
     public SoundEffectController()
     {
         preloadSounds = new HashMap<>();
-        sfxRegister = GlobalSoundController.registerSoundEffectController(this);
+        sfxRegNum = GlobalSoundController.registerSoundEffectController(this);
     }
     
     /**
