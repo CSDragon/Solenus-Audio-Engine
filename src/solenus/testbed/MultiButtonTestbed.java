@@ -92,12 +92,15 @@ public class MultiButtonTestbed implements ActionListener
         }
         if(e.getSource() == but2)
         {
-            sfxc.getSound("beatdown").play();
+            sfxc.getSound("beatdown").play(0.05d);
+            
         }
         if(e.getSource() == but3)
-            sfxc.getSound("beatdown").pause();
+            sfxc.getSound("beatdown").stop(0);
         if(e.getSource() == but4)
             sfxc.addSound(new File("audio/beatdown.wav"), 0, 0, "beatdown");
+        if(e.getSource() == but5)
+            sfxc.getSound("beatdown").start(0);
         //if(e.getSource() == but5)
         //    GlobalSoundController.goBook("In Vento");
 
