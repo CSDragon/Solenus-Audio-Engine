@@ -131,6 +131,12 @@ public class SoundEffectController implements AudioCueListener
         return preloadCues.get(name);
     }
 
+    
+    
+    
+    //Audio Cue Overhead
+    //<editor-fold desc="Listen Functions">
+    
     /*
      * The following methods implement AudioCueListener.
      * 
@@ -188,5 +194,7 @@ public class SoundEffectController implements AudioCueListener
                 break;
         }
     }
+    
+    //</editor-fold>
     
 }
